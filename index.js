@@ -5,8 +5,12 @@ const fs = require('fs');
 (async () => {
     const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
+
+
+    // put link here - Make sure they are links for a specific person...
     await page.goto('https://www.brainyquote.com/authors/jerome-powell-quotes');
-    //   await page.screenshot({path: 'example.png'});
+
+
     await page.waitForTimeout(500)
     let writeArray = []
 
@@ -25,8 +29,6 @@ const fs = require('fs');
             try {
                 segment.quote = document.querySelector(`#quotesList >div:nth-child(${i})>div>a`).innerText
                 segment.author = document.querySelector(`#quotesList >div:nth-child(${i})>div>a:nth-child(3)`).innerText
-                console.log(i)
-                console.log(document.querySelector(`#quotesList >div:nth-child(${i})>div>a`).innerText)
             } catch (err) {
                 console.log(err)
             }
@@ -37,10 +39,6 @@ const fs = require('fs');
 
 
     console.log(writeArray)
-    // fs.writeFile('quotes.json', writeArray, function (err) {
-    //     if (err) return console.log(err);
-    //     console.log('Hello World > helloworld.txt');
-    // })
     fs.writeFileSync('quotes.json', JSON.stringify(writeArray));
 
     // await browser.close();
