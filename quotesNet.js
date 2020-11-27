@@ -8,7 +8,8 @@ const fs = require('fs');
 
 
     // put link here - Make sure they are links for a specific person...
-    await page.goto('https://www.brainyquote.com/authors/jerome-powell-quotes');
+    await page.goto('https://www.quotes.net/authors/Justin+Amash');
+    
 
 
     await page.waitForTimeout(500)
@@ -21,14 +22,14 @@ const fs = require('fs');
             "author": ""
         }
         let returnArray = []
-        for (i = 1; i < document.querySelector("#quotesList").children.length; i++) {
+        for (i = 1; i < document.querySelector("#content-body > div > div.tdata-ext > div").children.length; i++) {
             segment = {
                 "quote": "",
                 "author": ""
             }
             try {
-                segment.quote = document.querySelector(`#quotesList >div:nth-child(${i})>div>a`).innerText
-                segment.author = document.querySelector(`#quotesList >div:nth-child(${i})>div>a:nth-child(3)`).innerText
+                segment.quote = document.querySelector(`#content-body > div > div.tdata-ext > div > div:nth-child(${i}) > blockquote > a`).innerText
+                segment.author = document.querySelector("#content-body > div > div.tdata-ext > div > div:nth-child(1) > p > a").innerText.replace("–","").trim()
             } catch (err) {
                 console.log(err)
             }
@@ -39,7 +40,7 @@ const fs = require('fs');
 
 
     console.log(writeArray)
-    fs.writeFileSync('quotes.json', JSON.stringify(writeArray));
+    fs.writeFileSync('quotesNet.json', JSON.stringify(writeArray));
 
     // await browser.close();
 })();
